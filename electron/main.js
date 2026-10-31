@@ -55,7 +55,8 @@ ipcMain.handle('api:request', async (_e, { base, method = 'GET', path: p, body, 
   const ac = new AbortController(); const timer = setTimeout(() => ac.abort(), 15000);
   try {
     const r = await net.fetch(base + p, { method, headers, body: body ? JSON.stringify(body) : undefined, signal: ac.signal });
-    let j = {}; try { j = await r.json(); } catch (_) { /* not JSON */ }
+    let j = {}; let raw = '';
+    try { raw = await r.text(); j = JSON.parse(raw); } catch (_) { j = { ok: false, error: 'bad_response', message: `The website answered with an unexpected reply (HTTP ${r.status}). Check the website: ${base + p}`, detail: raw.slice(0, 300) }; console.error('[api]', r.status, base + p, raw.slice(0, 300)); }
     if (typeof j.token === 'string') { saveToken(j.token); delete j.token; }
     if (auth && r.status === 401) clearToken();
     return { status: r.status, ...j };
