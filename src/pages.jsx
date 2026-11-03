@@ -328,7 +328,7 @@ export function BreakSummary() {
     <div className="between" style={{ padding: '12px 0', borderTop: first ? 0 : '1px solid var(--border)' }}><div className="row"><span className="history-no">{i}</span><div className="history-copy"><strong>Break #{i}</strong><small>{dy(a)} · {tm(a)} – {b ? tm(b) : 'In progress'}</small></div></div><span className="duration">{d}</span></div>);
   const history = (title, sub) => (
     <section className="panel"><div className="panel-title"><Ico n="history" /><span>{title}</span></div><p className="panel-subtitle">{sub}</p>
-      {s.breaks.map((b, i) => <Hist key={i} i={i + 1} a={b.start} b={b.end} d={fmtDur(((b.end ?? nowMs()) - b.start) / 1000)} first={i === 0} />)}
+      {s.breaks.map((b, i) => <Hist key={i} i={i + 1} a={b.start} b={b.end} d={fmtDur(((b.end ?? nowMs()) - b.start) / 1000, true)} first={i === 0} />)}
       {s.status === 'break' && <Hist i={s.breaks.length + 1} a={s.breakStart} d={fmtDur(stats.brk - s.breaks.reduce((x, b) => x + ((b.end ?? nowMs()) - b.start) / 1000, 0), true)} first={!s.breaks.length} />}
       {!s.breaks.length && s.status !== 'break' && <p className="muted small" style={{ marginTop: 14 }}>No breaks recorded yet.</p>}
       <div className="stat-line" style={{ marginTop: 8, borderTop: '1px solid var(--border)' }}><span className="muted">Offline time</span><strong>{fmtDur(stats.offlineTotal)} · {stats.offlineCount} times</strong></div></section>);
