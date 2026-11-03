@@ -15,7 +15,8 @@ export const PROJECTS = [
 const p2 = (n) => String(Math.floor(n)).padStart(2, '0');
 export const fmt = (s) => { s = Math.max(0, Math.floor(s)); return `${p2(s / 3600)}:${p2((s % 3600) / 60)}:${p2(s % 60)}`; };
 export const fmtHM = (s) => { const h = Math.floor(s / 3600); const m = p2((s % 3600) / 60); return h > 0 ? `${h}h ${m}m` : `${Number(m)}m`; }; // 40m, 1h 00m, 1h 30m
-export const fmtDur = (s, sec) => `${Math.floor(s / 60)}m${sec ? ` ${p2(s % 60)}s` : ''}`;
+// Break rule: each break shows minutes + seconds (2m 40s); a TOTAL break time is rounded to the nearest minute (24m).
+export const fmtDur = (s, sec) => (sec ? `${Math.floor(s / 60)}m ${p2(s % 60)}s` : `${Math.round(s / 60)}m`);
 
 const KEY = 'krono-mock-v3';
 const BEAT = 'krono-beat'; // last time the app was alive (for crash / closed-app recovery)
